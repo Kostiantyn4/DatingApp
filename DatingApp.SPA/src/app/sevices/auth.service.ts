@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AuthService {
   baseUrl = 'http://localhost:5000/api/auth/';
   userToken: any;
@@ -11,23 +14,17 @@ export class AuthService {
 
   login(model: any) {
 
-    return this.http.post(this.baseUrl + 'login', model, this.httpOptions())
+    return this.http.post(this.baseUrl + 'login', model)
                     .pipe(map((response: any) => {
-                      const token = response.token;
-                      if (token) {
-                        localStorage.setItem('token', token);
-                        this.userToken = token;
-                      }
-                    }));
+                            const user = response;
+                            if (user) {
+                              localStorage.setItem('token', user.token);
+                            }
+                          }),
+                    );
   }
 
   register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model, this.httpOptions());
-  }
-
-  private httpOptions() {
-    return {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+    return this.http.post(this.baseUrl + 'register', model);
   }
 }

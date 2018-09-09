@@ -21,8 +21,11 @@ namespace DatingApp.API.Data
         /// <returns>true - if user exist, false - if there is no such user</returns>
         public async Task<bool> IsUserExist(string username)
         {
-            if(await _context.Users.AnyAsync(x => x.UserName.ToLower() == username.ToLower()))
-                return true;
+            if (!string.IsNullOrEmpty(username))
+            {
+                if(await _context.Users.AnyAsync(x => x.UserName.ToLower() == username.ToLower()))
+                    return true;
+            }
 
             return false;
         }
@@ -35,6 +38,7 @@ namespace DatingApp.API.Data
         /// <returns>user dto</returns>
         public async Task<User> Login(string username, string password)
         {
+            throw new NotSupportedException();
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
             
             if(user == null)

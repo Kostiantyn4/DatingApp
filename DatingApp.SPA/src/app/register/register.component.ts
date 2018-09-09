@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
                     .subscribe(() => {
                       console.log('register ok');
                     }, error => {
-                      console.log('error');
+                      console.log(error);
                     });
   }
 
