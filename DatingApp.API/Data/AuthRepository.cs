@@ -38,7 +38,6 @@ namespace DatingApp.API.Data
         /// <returns>user dto</returns>
         public async Task<User> Login(string username, string password)
         {
-            throw new NotSupportedException();
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
             
             if(user == null)
