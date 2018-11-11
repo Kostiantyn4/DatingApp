@@ -35,13 +35,13 @@ namespace DatingApp.API
         {
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"))); 
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);;
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
             services.AddCors();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options => 
+                    .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                         {
@@ -60,17 +60,20 @@ namespace DatingApp.API
             {
                 app.UseDeveloperExceptionPage();
             }
-            else 
+            else
             {
-                app.UseExceptionHandler(builder => {
-                    builder.Run(async context => {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if(error != null)
-                            {
-                                context.Response.AddApplicationError(error.Error.Message);
-                                await context.Response.WriteAsync(error.Error.Message);
-                            }
+                        if (error != null)
+                        {
+                            string errorMessage = error.Error.Message;
+                            context.Response.AddApplicationError(errorMessage);
+                            await context.Response.WriteAsync(errorMessage);
+                        }
                     });
                 });
             }

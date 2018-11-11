@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   isRegisterMode = false;
   values: any;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {

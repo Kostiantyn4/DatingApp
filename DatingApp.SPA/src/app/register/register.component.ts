@@ -18,12 +18,13 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.authService.register(this.model)
-                    .subscribe(() => {
-                      console.log('register ok');
-                    }, error => {
-                      console.log(error);
-                    });
+    this.authService
+      .register(this.model)
+      .subscribe(() => {
+        console.log('register ok');
+      }, error => {
+        console.log(error);
+      });
   }
 
   cancel() {

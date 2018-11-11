@@ -12,8 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.API.Controllers
 {
+    //[ApiController]
     [Route("api/[controller]")]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
@@ -27,12 +28,12 @@ namespace DatingApp.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserDto user)
         {
-            // validate request and if ok - create new user
-            if(await _repo.IsUserExist(user.Name))
-                ModelState.AddModelError("Name", "User is already exist");
-
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            // validate request and if ok - create new user
+            if (await _repo.IsUserExist(user.Name))
+                return BadRequest("Username already exists");
 
             var newUser = new User
             {
@@ -40,7 +41,6 @@ namespace DatingApp.API.Controllers
             };
 
             var createUser = await _repo.Register(newUser, user.Password);
-
             return StatusCode(201);
         }
 
@@ -49,12 +49,12 @@ namespace DatingApp.API.Controllers
         {
             var loginedUser = await _repo.Login(user.Name, user.Password);
 
-            if(loginedUser == null)
+            if (loginedUser == null)
                 return Unauthorized();
 
             var token = GenerateToken(loginedUser.Id, loginedUser.UserName);
 
-            return Ok(new {token});          
+            return Ok(new { token });
         }
 
         private string GenerateToken(int userId, string username)
