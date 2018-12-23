@@ -26,7 +26,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserDto user)
+        public async Task<IActionResult> Register([FromBody]UserCredentialsDto user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -45,7 +45,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]UserDto user)
+        public async Task<IActionResult> Login([FromBody]UserCredentialsDto user)
         {
             var loginedUser = await _repo.Login(user.Name, user.Password);
 

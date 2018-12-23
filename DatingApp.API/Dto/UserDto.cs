@@ -1,14 +1,18 @@
-using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace DatingApp.API.Dto
 {
     public class UserDto
     {
-        [Required]
-        public string Name { get; set; }
-        
-        [Required]
-        [StringLength(12, MinimumLength = 4, ErrorMessage = "Please specify a password between 4 and 12 characters")]
-        public string Password { get; set; }
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string Gender { get; set; }
+        public int Age { get; set; }
+        public string KnownAs { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime LastActive { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

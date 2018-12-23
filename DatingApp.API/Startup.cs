@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,9 +38,17 @@ namespace DatingApp.API
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddMvc()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                    .AddJsonOptions(o =>
+                        {
+                            o.SerializerSettings
+                             .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                        });
             services.AddCors();
+            services.AddAutoMapper();
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -54,7 +63,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.1
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seader)
         {
             if (env.IsDevelopment())
             {
@@ -77,6 +86,8 @@ namespace DatingApp.API
                     });
                 });
             }
+
+            //seader.SeedTestUsers(); populate db by test users with photos
 
             app.UseCors(x => x.AllowAnyHeader()
                               .AllowAnyMethod()
