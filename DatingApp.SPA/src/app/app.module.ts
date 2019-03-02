@@ -15,11 +15,13 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './sevices/error.interceptor';
 import { AlertifyService } from './sevices/alertify.service';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './guards/auth.guard';
+import { UserService } from './sevices/user.service';
 
 @NgModule({
    declarations: [
@@ -28,6 +30,7 @@ import { AuthGuard } from './guards/auth.guard';
       HomeComponent,
       RegisterComponent,
       MemberListComponent,
+      MemberCardComponent,
       ListsComponent,
       MessagesComponent
    ],
@@ -43,7 +46,8 @@ import { AuthGuard } from './guards/auth.guard';
       AuthService,
       ErrorInterceptorProvider,
       AlertifyService,
-      AuthGuard
+      AuthGuard,
+      UserService
    ],
    bootstrap: [
       AppComponent

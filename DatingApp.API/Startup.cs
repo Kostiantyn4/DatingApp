@@ -87,7 +87,7 @@ namespace DatingApp.API
                 });
             }
 
-            //seader.SeedTestUsers(); populate db by test users with photos
+            //seader.SeedTestUsers(); //populate db by test users with photos
 
             app.UseCors(x => x.AllowAnyHeader()
                               .AllowAnyMethod()
