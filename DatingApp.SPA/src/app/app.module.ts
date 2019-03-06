@@ -8,7 +8,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 
 import { AuthService } from './sevices/auth.service';
@@ -18,12 +18,14 @@ import { ErrorInterceptorProvider } from './sevices/error.interceptor';
 import { AlertifyService } from './sevices/alertify.service';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './guards/auth.guard';
 import { UserService } from './sevices/user.service';
-import { environment } from '../environments/environment';
+import { MemberDetailResolver } from './resolver/member-detail.resolver';
+import { MemberListResolver } from './resolver/member-list.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -37,6 +39,7 @@ export function tokenGetter() {
       RegisterComponent,
       MemberListComponent,
       MemberCardComponent,
+      MemberDetailComponent,
       ListsComponent,
       MessagesComponent
    ],
@@ -46,6 +49,7 @@ export function tokenGetter() {
       HttpClientModule,
       FormsModule,
       BsDropdownModule.forRoot(),
+      TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
          config: {
@@ -60,7 +64,9 @@ export function tokenGetter() {
       ErrorInterceptorProvider,
       AlertifyService,
       AuthGuard,
-      UserService
+      UserService,
+      MemberDetailResolver,
+      MemberListResolver
    ],
    bootstrap: [
       AppComponent
