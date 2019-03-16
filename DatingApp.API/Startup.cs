@@ -63,7 +63,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.1
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seader)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -87,7 +87,7 @@ namespace DatingApp.API
                 });
             }
 
-            //seader.SeedTestUsers(); //populate db by test users with photos
+            //seeder.SeedTestUsers(); //populate db by test users with photos
 
             app.UseCors(x => x.AllowAnyHeader()
                               .AllowAnyMethod()

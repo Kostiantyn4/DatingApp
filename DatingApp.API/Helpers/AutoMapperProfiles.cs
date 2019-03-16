@@ -10,7 +10,7 @@ namespace DatingApp.API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UserDto>()
-            .ForMember(dest => dest.PhotoUrl,
+                .ForMember(dest => dest.PhotoUrl,
                        opt =>
                         {
                             opt.MapFrom(src =>
@@ -18,12 +18,12 @@ namespace DatingApp.API.Helpers
                                    .FirstOrDefault(p => p.IsMain)
                                    .Url);
                         })
-            .ForMember(dest => dest.Age,
+                .ForMember(dest => dest.Age,
                        opt => opt.MapFrom(src => src.DateOfBirth.GetAge())
                       );
 
             CreateMap<User, DetailedUserDto>()
-            .ForMember(dest => dest.PhotoUrl,
+                .ForMember(dest => dest.PhotoUrl,
                        opt =>
                         {
                             opt.MapFrom(src =>
@@ -31,10 +31,16 @@ namespace DatingApp.API.Helpers
                                    .FirstOrDefault(p => p.IsMain)
                                    .Url);
                         })
-            .ForMember(dest => dest.Age,
+                .ForMember(dest => dest.Age,
                        opt => opt.MapFrom(src => src.DateOfBirth.GetAge())
             );
 
+            CreateMap<DetailedUserDto, User>()
+                .ForMember(dest => dest.Id,
+                    opt => opt.Ignore())
+                .ForMember(dest=>dest.Photos,
+                    opt=>opt.Ignore());
+            
             CreateMap<Photo, PhotoDto>();
         }
     }
