@@ -42,6 +42,11 @@ namespace DatingApp.API.Helpers
                     opt=>opt.Ignore());
             
             CreateMap<Photo, PhotoDto>();
+            
+            CreateMap<Photo, UploadPhotoDto>()
+                .ForMember(dest=>dest.Id, opt=>opt.Ignore());
+            
+            CreateMap<UploadPhotoDto, Photo>();
         }
     }
 }

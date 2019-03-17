@@ -37,6 +37,13 @@ namespace DatingApp.API.Data
                     .FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<Photo> GetPhoto(int id)
+        {
+            return await 
+                _context.Photos
+                    .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await
