@@ -3,7 +3,8 @@ import { Photo } from '../../models/Photo';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../sevices/auth.service';
-import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
+import { UserService } from '../../sevices/user.service';
+import { AlertifyService } from '../../sevices/alertify.service';
 
 @Component({
   selector: 'app-photo-editor',
@@ -14,10 +15,13 @@ export class PhotoEditorComponent implements OnInit {
 
   @Input() photos: Photo[];
   uploader: FileUploader;
+  mainPhoto: Photo;
   hasBaseDropZoneOver = false;
   baseUrl = environment.baseUrl;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private userService: UserService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.initializeUploader();
@@ -40,7 +44,7 @@ export class PhotoEditorComponent implements OnInit {
     // telling that the file is not going with credentials
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
-    // create a photo object after it has uploaded 
+    // create a photo object after it has uploaded
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
         const res: Photo = JSON.parse(response);
@@ -54,6 +58,20 @@ export class PhotoEditorComponent implements OnInit {
 
         this.photos.push(photo);
       }
-    }
+    };
+  }
+
+  setMainPhoto(photo: Photo) {
+    const userId = this.authService.decodedToken.nameid;
+    this.userService
+      .setMainPhoto(userId, photo.id)
+      .subscribe(() => {
+        const previousMain = this.photos.filter(p => p.isMain === true)[0];
+        previousMain.isMain = false;
+        photo.isMain = true;
+        this.alertify.success('Photo was set as main');
+      }, error => {
+        this.alertify.error(error);
+      });
   }
 }

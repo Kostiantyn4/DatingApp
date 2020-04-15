@@ -102,5 +102,34 @@ namespace DatingApp.API.Controllers
             var photoToReturn = _mapper.Map<UploadPhotoDto>(photo);
             return CreatedAtRoute("GetPhoto", new { id = photo.Id }, photoToReturn);
         }
+
+        [HttpPost("{id}/setMain")]
+        public async Task<IActionResult> SetMainPhoto(int userId, int id)
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+            
+            if (userId != int.Parse(claim.Value))
+                return Unauthorized();
+
+            var user = await _repo.GetUser(userId);
+
+            if (user.Photos.All(x => x.Id != id))
+                return Unauthorized();
+
+            var photoFromRepo = await _repo.GetPhoto(id);
+
+            if (photoFromRepo.IsMain)
+                return BadRequest("This is already the main photo!");
+
+            var currentMainPhoto = await _repo.GetMainPhotoForUser(userId);
+            currentMainPhoto.IsMain = false;
+            
+            photoFromRepo.IsMain = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Could not set photo to main!");
+        }
     }
 }

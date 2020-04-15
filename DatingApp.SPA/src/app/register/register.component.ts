@@ -13,7 +13,8 @@ export class RegisterComponent implements OnInit {
 
   model: any = {};
 
-  constructor(private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private authService: AuthService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
